@@ -4,23 +4,28 @@
 #include "../Sprite.h"
 #include "../Server/Common.h"
 
-
 class Character : public client_interface<GameMsg>
 {
 public:
 	virtual ~Character() = default;
 
+	void Update();
+	void ConnectToServer();
+
 	virtual void OnPlayerCreate() = 0;
 	virtual void OnPlayerUpdate() = 0;
 
 protected:
-	std::unordered_map<uint32_t, sPlayerDescription> object;
-	uint32_t playerID = 0;
-	sPlayerDescription playerDesc;
+	uint32_t nPlayerID = 0;
+	std::unordered_map<uint32_t, sPlayerDescription> mapObjects;
+	sPlayerDescription descPlayer;
 
-	bool waitingForConnection = true;
+	SDL_Rect rect;
 
-	SDL_Rect transform;
 	Sprite* sprite;
 	Window* window;
+
+private:
+	bool waitingForConnection = true;
+
 };

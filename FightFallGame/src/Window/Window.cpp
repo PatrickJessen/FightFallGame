@@ -29,7 +29,7 @@ Window::Window(const char* title, int xpos, int ypos, int width, int height, boo
 		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 		if (renderer)
 		{
-			SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
+			SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 			std::cout << "renderer created" << "\n";
 		}
 		isRunning = true;
@@ -75,7 +75,7 @@ void Window::Update()
 void Window::Clear()
 {
 	SDL_RenderClear(renderer);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 	SDL_Rect rect = { 0, 0, width, height };
 
 	SDL_RenderFillRect(renderer, &rect);

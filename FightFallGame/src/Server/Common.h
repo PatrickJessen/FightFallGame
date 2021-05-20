@@ -1,8 +1,7 @@
 #pragma once
 #include <cstdint>
-
-#define OLC_PGEX_NETWORK
 #include "Network.h"
+
 
 enum class GameMsg : uint32_t
 {
@@ -26,10 +25,11 @@ struct sPlayerDescription
 
 	uint32_t nHealth = 100;
 	uint32_t nAmmo = 20;
-	uint32_t nKills = 0;
-	uint32_t nDeaths = 0;
 
 	float fRadius = 0.5f;
 
-	SDL_Rect vPos;
+	float xPos;
+	float yPos;
+	int width;
+	int height;
 };

@@ -7,20 +7,16 @@
 int main()
 {
 	Window* window = new Window("test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200, 750, false);
-	Sprite* sprite = new Sprite("test.png", window);
-	TestChar* testchar = new TestChar(sprite, window, 100, 100, 100, 100);
+	Sprite* sprite = new Sprite("Assets/test.png", window);
+	Character* tester = new TestChar(window, sprite);
 
-	testchar->OnPlayerCreate();
+	tester->OnPlayerCreate();
+	tester->ConnectToServer();
 	while (true)
 	{
-		while (!testchar->Incoming().empty())
-		{
-			testchar->OnPlayerUpdate();
-			window->Update();
-			window->Clear();
-
-			SDL_Delay(1);
-		}
+		tester->Update();
+		window->Update();
+		window->Clear();
 	}
 
 	window->Clean();

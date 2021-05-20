@@ -20,19 +20,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Characters\Character.h" />
-    <ClInclude Include="src\Characters\TestChar.h" />
     <ClInclude Include="src\Server\Common.h" />
     <ClInclude Include="src\Server\Network.h" />
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\Window\Window.h" />
+    <ClInclude Include="src\Characters\TestChar.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Characters\TestChar.cpp" />
+    <ClCompile Include="src\Characters\Character.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Window\Window.cpp" />
+    <ClCompile Include="src\Characters\TestChar.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

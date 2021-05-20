@@ -27,13 +27,13 @@
     <ClInclude Include="src\Characters\Character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Server\Network.h">
+    <ClInclude Include="src\Characters\TestChar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Server\Common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Characters\TestChar.h">
+    <ClInclude Include="src\Server\Network.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -51,6 +51,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Characters\TestChar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Characters\Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

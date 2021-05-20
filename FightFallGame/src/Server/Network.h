@@ -69,7 +69,6 @@ David Barr, aka javidx9, ©OneLoneCoder 2019, 2020, 2021
 #include <asio/ts/buffer.hpp>
 #include <asio/ts/internet.hpp>
 
-
 // Message
 
 // Message Header is sent at start of all messages. The template allows us

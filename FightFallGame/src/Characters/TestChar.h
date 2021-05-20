@@ -1,13 +1,19 @@
 #pragma once
 #include "Character.h"
+#include <asio.hpp>
 
 class TestChar : public Character
 {
 public:
-	TestChar(Sprite* sprite, Window* window, int posX, int posY, int width, int height);
+	TestChar(Window* window, Sprite* sprite)
+	{
+		this->window = window;
+		this->sprite = sprite;
+	}
 	~TestChar();
 
 public:
 	virtual void OnPlayerCreate() override;
 	virtual void OnPlayerUpdate() override;
 };
+
