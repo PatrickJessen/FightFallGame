@@ -11,6 +11,8 @@ public:
 
 	void Update();
 	void ConnectToServer();
+	void Gravity();
+	void Collision();
 
 	virtual void OnPlayerCreate() = 0;
 	virtual void OnPlayerUpdate() = 0;
@@ -21,9 +23,15 @@ protected:
 	sPlayerDescription descPlayer;
 
 	SDL_Rect rect;
+	SDL_Rect srcRect;
+	SDL_Rect platform;
 
 	Sprite* sprite;
 	Window* window;
+
+	int spriteNr = 0;
+
+	std::string pathNr = "Assets/run" + spriteNr;
 
 private:
 	bool waitingForConnection = true;

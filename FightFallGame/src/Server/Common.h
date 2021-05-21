@@ -32,4 +32,7 @@ struct sPlayerDescription
 	float yPos;
 	int width;
 	int height;
+
+	int animX;
+	int animY;
 };
