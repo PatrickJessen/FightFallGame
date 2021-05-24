@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include "Network.h"
+#include "../Sprite.h"
 
 
 enum class GameMsg : uint32_t

@@ -7,7 +7,7 @@
 int main()
 {
 	Window* window = new Window("test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200, 750, false);
-	Sprite* sprite = new Sprite("Assets/stall.png", window);
+	Sprite* sprite = new Sprite("Assets/BoxerIdle.png", window);
 	Character* tester = new TestChar(window, sprite);
 
 	tester->OnPlayerCreate();

@@ -4,12 +4,13 @@
 #include "../Sprite.h"
 #include "../Server/Common.h"
 
+
 class Character : public client_interface<GameMsg>
 {
 public:
 	virtual ~Character() = default;
 
-	void Update();
+	bool Update();
 	void ConnectToServer();
 	void Gravity();
 	void Collision();
@@ -29,9 +30,19 @@ protected:
 	Sprite* sprite;
 	Window* window;
 
-	int spriteNr = 0;
+	bool IsOnGround();
+	bool AirTime();
 
-	std::string pathNr = "Assets/run" + spriteNr;
+	void StartTimer();
+	void StopTimer();
+	bool airActive = false;
+	float currentTime = 0.0f;
+	float airTime = 50.0f;
+
+	bool canJump = false;
+
+	int xTest;
+	int yTest;
 
 private:
 	bool waitingForConnection = true;

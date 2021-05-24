@@ -1,10 +1,11 @@
 #include "Character.h"
+#include "../Input.h"
 
-void Character::Update()
+bool Character::Update()
 {
 	if (IsConnected())
 	{
-		SDL_Delay(10);
+		SDL_Delay(5);
 		while (!Incoming().empty())
 		{
 			auto msg = Incoming().pop_front().msg;
@@ -16,6 +17,8 @@ void Character::Update()
 					std::cout << "Server accepted client - you're in!\n";
 					message<GameMsg> msg;
 					msg.header.id = GameMsg::Client_RegisterWithServer;
+					descPlayer.xPos = 200;
+					descPlayer.yPos = 200;
 					msg << descPlayer;
 					Send(msg);
 					break;
@@ -64,26 +67,36 @@ void Character::Update()
 		if (waitingForConnection)
 		{
 			std::cout << "Waiting for Connection....\n";
+			return true;
 		}
 
-		OnPlayerUpdate();
+		if (mapObjects[nPlayerID].nUniqueID == nPlayerID)
+		{
+			OnPlayerUpdate();
+			Uint32 ticks = SDL_GetTicks();
+			Uint32 seconds = ticks / 1000;
+			Uint32 spriteTick = (ticks / 150) % 10;
+			mapObjects[nPlayerID].animX = ((int)spriteTick % 10) * 55;
+			srcRect = { mapObjects[nPlayerID].animX, mapObjects[nPlayerID].animY, 50, 60 };
+		}
 
+
+
+		SDL_SetRenderDrawColor(window->GetRender(), 200, 150, 100, 200);
+		platform = { 150, 600, 900, 50 };
+		SDL_RenderFillRect(window->GetRender(), &platform);
 		for (auto& object : mapObjects)
 		{
 			if (object.second.nUniqueID != 0)
 			{
-				srcRect = { (int)object.second.animX, (int)object.second.animY, 30, 90 };
 				rect = { (int)object.second.xPos, (int)object.second.yPos, descPlayer.width, descPlayer.height };
 				SDL_RenderCopy(window->GetRender(), sprite->tex, &srcRect, &rect);
-				SDL_SetRenderDrawColor(window->GetRender(), 200, 150, 100, 200);
-				platform = { 150, 600, 900, 50 };
-				SDL_RenderFillRect(window->GetRender(), &platform);
 
 				// Gravity //
-				object.second.yPos += 3;
+				object.second.yPos += 2.0f;
 
 				// Collision //
-				if (platform.y - rect.h <= rect.y && rect.x + rect.w > platform.x && rect.x < platform.x + platform.w && rect.y < platform.y)
+				if (IsOnGround())
 				{
 					object.second.yPos = platform.y - rect.h;
 				}
@@ -94,30 +107,30 @@ void Character::Update()
 		msg.header.id = GameMsg::Game_UpdatePlayer;
 		msg << mapObjects[nPlayerID];
 		Send(msg);
-
+		return true;
 	}
 }
 
 void Character::ConnectToServer()
 {
-	Connect("10.109.162.46", 60000);
+	Connect("127.0.0.1", 60000);
 }
 
-void Character::Gravity()
+bool Character::IsOnGround()
 {
-	for (auto& object : mapObjects)
+	if (platform.y - rect.h <= rect.y && rect.x + rect.w > platform.x && rect.x < platform.x + platform.w && rect.y < platform.y)
 	{
-		object.second.yPos += 3;
+		return true;
 	}
+	return false;
 }
 
-void Character::Collision()
+bool Character::AirTime()
 {
-	for (auto& object : mapObjects)
+	currentTime += 1.0f;
+	if (currentTime < airTime)
 	{
-		if (platform.y - rect.h <= rect.y && rect.x + rect.w > platform.x && rect.x < platform.x + platform.w && rect.y < platform.y)
-		{
-			object.second.yPos = platform.y - rect.h;
-		}
+		return true;
 	}
+	return false;
 }

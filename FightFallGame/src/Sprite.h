@@ -13,8 +13,8 @@ public:
 
 	void ChangeSprite(const char* path);
 
-private:
 	const char* path;
+private:
 
 public:
 	SDL_Surface* surface;

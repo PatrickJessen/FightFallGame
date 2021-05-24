@@ -15,5 +15,9 @@ public:
 public:
 	virtual void OnPlayerCreate() override;
 	virtual void OnPlayerUpdate() override;
+
+private:
+	void SetMovement();
+	bool test = true;
 };
 
