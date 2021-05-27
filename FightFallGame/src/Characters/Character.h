@@ -33,6 +33,8 @@ protected:
 	bool IsOnGround();
 	bool AirTime();
 
+	void DrawSprite(Sprite* sp);
+
 	void StartTimer();
 	void StopTimer();
 	bool airActive = false;

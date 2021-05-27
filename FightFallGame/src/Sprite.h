@@ -9,6 +9,7 @@ public:
 
 public:
 	Sprite(const char* path, Window* window);
+	Sprite() = default;
 	~Sprite();
 
 	void ChangeSprite(const char* path);

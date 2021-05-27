@@ -17,8 +17,6 @@ bool Character::Update()
 					std::cout << "Server accepted client - you're in!\n";
 					message<GameMsg> msg;
 					msg.header.id = GameMsg::Client_RegisterWithServer;
-					descPlayer.xPos = 200;
-					descPlayer.yPos = 200;
 					msg << descPlayer;
 					Send(msg);
 					break;
@@ -36,8 +34,8 @@ bool Character::Update()
 				{
 					sPlayerDescription desc;
 					msg >> desc;
+					desc.sprite = new Sprite("Assets/BoxerIdle.png", window);
 					mapObjects.insert_or_assign(desc.nUniqueID, desc);
-
 					if (desc.nUniqueID == nPlayerID)
 					{
 						// Now we exist in game world
@@ -58,6 +56,7 @@ bool Character::Update()
 				{
 					sPlayerDescription desc;
 					msg >> desc;
+					desc.sprite = mapObjects[desc.nUniqueID].sprite;
 					mapObjects.insert_or_assign(desc.nUniqueID, desc);
 					break;
 				}
@@ -70,16 +69,12 @@ bool Character::Update()
 			return true;
 		}
 
-		if (mapObjects[nPlayerID].nUniqueID == nPlayerID)
-		{
-			OnPlayerUpdate();
-			Uint32 ticks = SDL_GetTicks();
-			Uint32 seconds = ticks / 1000;
-			Uint32 spriteTick = (ticks / 150) % 10;
-			mapObjects[nPlayerID].animX = ((int)spriteTick % 10) * 55;
-			srcRect = { mapObjects[nPlayerID].animX, mapObjects[nPlayerID].animY, 50, 60 };
-		}
 
+		OnPlayerUpdate();
+		Uint32 ticks = SDL_GetTicks();
+		Uint32 seconds = ticks / 1000;
+		Uint32 spriteTick = (ticks / 150) % 10;
+		mapObjects[nPlayerID].animX = ((int)spriteTick % 10) * 55;
 
 
 		SDL_SetRenderDrawColor(window->GetRender(), 200, 150, 100, 200);
@@ -87,20 +82,38 @@ bool Character::Update()
 		SDL_RenderFillRect(window->GetRender(), &platform);
 		for (auto& object : mapObjects)
 		{
-			if (object.second.nUniqueID != 0)
+			srcRect = { object.second.animX, object.second.animY, 50, 60 };
+			rect = { (int)object.second.xPos, (int)object.second.yPos, descPlayer.width, descPlayer.height };
+			SDL_RenderCopy(window->GetRender(), object.second.sprite->tex, &srcRect, &rect);
+
+			if (Input::KeyState(Key::D))
 			{
-				rect = { (int)object.second.xPos, (int)object.second.yPos, descPlayer.width, descPlayer.height };
-				SDL_RenderCopy(window->GetRender(), sprite->tex, &srcRect, &rect);
-
-				// Gravity //
-				object.second.yPos += 2.0f;
-
-				// Collision //
-				if (IsOnGround())
+				mapObjects[nPlayerID].xPos += 3;
+				if (object.second.nUniqueID == nPlayerID)
 				{
-					object.second.yPos = platform.y - rect.h;
+					object.second.keyPress = KeyPress::RIGHT;
 				}
+				//mapObjects[nPlayerID].animX = ((int)spriteTick % 10) * 55;
 			}
+
+			if (object.second.keyPress == KeyPress::RIGHT)
+			{
+				object.second.sprite->ChangeSprite("Assets/BoxerWalkRight.png");
+				std::cout << object.second.nUniqueID << " Pressed D Key \n";
+			}
+			else if (object.second.keyPress == KeyPress::STALL)
+			{
+				object.second.sprite->ChangeSprite("Assets/BoxerIdle.png");
+			}
+			// Gravity //
+			object.second.yPos += 2.0f;
+
+			// Collision //
+			if (IsOnGround())
+			{
+				object.second.yPos = platform.y - rect.h;
+			}
+
 		}
 
 		message<GameMsg> msg;

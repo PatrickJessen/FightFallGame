@@ -31,6 +31,7 @@ void TestChar::SetMovement()
 		if (IsOnGround())
 		{
 			canJump = true;
+			mapObjects[nPlayerID].keyPress = KeyPress::JUMP;
 		}
 	}
 	else if (Input::KeyState(Key::S))
@@ -40,19 +41,22 @@ void TestChar::SetMovement()
 	else if (Input::KeyState(Key::A))
 	{
 		mapObjects[nPlayerID].xPos -= 3;
-		std::cout << nPlayerID << "\n";
+		mapObjects[nPlayerID].keyPress = KeyPress::LEFT;
 	}
 	else if (Input::KeyState(Key::D))
 	{
-		mapObjects[nPlayerID].xPos += 3;
-		sprite->ChangeSprite("Assets/BoxerWalkRight.png");
-		std::cout << descPlayer.animX << "\n";
-		//mapObjects[nPlayerID].animX = ((int)spriteTick % 10) * 55;
+		//mapObjects[nPlayerID].xPos += 3;
+		////sprite->ChangeSprite("Assets/BoxerWalkRight.png");
+		////std::cout << descPlayer.animX << "\n";
+		//sprite->ChangeSprite("Assets/BoxerWalkRight.png");
+		//mapObjects[nPlayerID].keyPress = KeyPress::RIGHT;
+		////mapObjects[nPlayerID].animX = ((int)spriteTick % 10) * 55;
 	}
 	if (!AirTime())
 	{
+		//sprite->ChangeSprite("Assets/BoxerIdle.png");
+		mapObjects[nPlayerID].keyPress = KeyPress::STALL;
 		currentTime = 0;
-		sprite->ChangeSprite("Assets/BoxerIdle.png");
 		canJump = false;
 	}
 

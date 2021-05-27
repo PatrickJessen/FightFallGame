@@ -3,6 +3,14 @@
 #include "Network.h"
 #include "../Sprite.h"
 
+enum class KeyPress
+{
+	STALL,
+	JUMP,
+	LEFT,
+	RIGHT,
+	HIT
+};
 
 enum class GameMsg : uint32_t
 {
@@ -36,4 +44,9 @@ struct sPlayerDescription
 
 	int animX;
 	int animY;
+
+	KeyPress keyPress;
+	Sprite* sprite;
+
+	sPlayerDescription() {}
 };
