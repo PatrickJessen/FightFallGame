@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include "../Sprite.h"
 #include "../Server/Common.h"
+#include "../Collider.h"
 
 
 class Character : public client_interface<GameMsg>
@@ -12,8 +13,8 @@ public:
 
 	bool Update();
 	void ConnectToServer();
-	void Gravity();
-	void Collision();
+
+	void UpdateVelocity();
 
 	virtual void OnPlayerCreate() = 0;
 	virtual void OnPlayerUpdate() = 0;
@@ -30,23 +31,13 @@ protected:
 	Sprite* sprite;
 	Window* window;
 
-	bool IsOnGround();
-	bool AirTime();
-
-	void DrawSprite(Sprite* sp);
-
-	void StartTimer();
-	void StopTimer();
-	bool airActive = false;
-	float currentTime = 0.0f;
-	float airTime = 50.0f;
-
-	bool canJump = false;
-
-	int xTest;
-	int yTest;
+	float speed = 0;
 
 private:
 	bool waitingForConnection = true;
+
+	const char* punchRightPath[6] = { "Assets/boxer/PunchRight1.png", "Assets/boxer/PunchRight2.png", "Assets/boxer/PunchRight3.png", "Assets/boxer/PunchRight4.png", "Assets/boxer/PunchRight5.png", "Assets/boxer/PunchRight6.png" };
+	const char* punchLeftPath[6] = { "Assets/boxer/PunchLeft1.png", "Assets/boxer/PunchLeft2.png", "Assets/boxer/PunchLeft3.png", "Assets/boxer/PunchLeft4.png", "Assets/boxer/PunchLeft5.png", "Assets/boxer/PunchLeft6.png" };
+	const char* boxerIdle[10] = { "Assets/boxer/Idle1.png", "Assets/boxer/Idle2.png", "Assets/boxer/Idle3.png", "Assets/boxer/Idle4.png", "Assets/boxer/Idle5.png", "Assets/boxer/Idle6.png", "Assets/boxer/Idle7.png", "Assets/boxer/Idle8.png", "Assets/boxer/Idle9.png", "Assets/boxer/Idle10.png" };
 
 };

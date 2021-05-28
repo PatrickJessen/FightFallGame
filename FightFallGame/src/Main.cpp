@@ -10,10 +10,23 @@ int main()
 	Sprite* sprite = new Sprite("Assets/BoxerIdle.png", window);
 	Character* tester = new TestChar(window, sprite);
 
+	const int FPS = 60;
+	const int frameDelay = 500 / FPS;
+
+	Uint32 frameStart;
+	int frameTime;
+
 	tester->OnPlayerCreate();
 	tester->ConnectToServer();
 	while (true)
 	{
+		frameStart = SDL_GetTicks();
+		frameTime = SDL_GetTicks() - frameStart;
+
+		if (frameDelay > frameTime)
+		{
+			SDL_Delay(frameDelay - frameTime);
+		}
 		tester->Update();
 		window->Update();
 		window->Clear();

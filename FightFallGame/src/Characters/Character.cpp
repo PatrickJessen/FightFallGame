@@ -71,10 +71,11 @@ bool Character::Update()
 
 
 		OnPlayerUpdate();
-		Uint32 ticks = SDL_GetTicks();
-		Uint32 seconds = ticks / 1000;
-		Uint32 spriteTick = (ticks / 150) % 10;
-		mapObjects[nPlayerID].animX = ((int)spriteTick % 10) * 55;
+		UpdateVelocity();
+		//Uint32 ticks = SDL_GetTicks();
+		//Uint32 seconds = ticks / 1000;
+		//Uint32 spriteTick = (ticks / 150) % 10;
+		//mapObjects[nPlayerID].animX = ((int)spriteTick % 10) * 55;
 
 
 		SDL_SetRenderDrawColor(window->GetRender(), 200, 150, 100, 200);
@@ -82,36 +83,63 @@ bool Character::Update()
 		SDL_RenderFillRect(window->GetRender(), &platform);
 		for (auto& object : mapObjects)
 		{
-			srcRect = { object.second.animX, object.second.animY, 50, 60 };
+			Uint32 ticks = SDL_GetTicks();
+			Uint32 seconds = ticks / 1000;
+			srcRect = { 200, 128, 300, 290 };
 			rect = { (int)object.second.xPos, (int)object.second.yPos, descPlayer.width, descPlayer.height };
-			SDL_RenderCopy(window->GetRender(), object.second.sprite->tex, &srcRect, &rect);
+			SDL_RenderCopyEx(window->GetRender(), object.second.sprite->tex, &srcRect, &rect, NULL, NULL, object.second.flip);
 
-			if (Input::KeyState(Key::D))
-			{
-				mapObjects[nPlayerID].xPos += 3;
-				if (object.second.nUniqueID == nPlayerID)
-				{
-					object.second.keyPress = KeyPress::RIGHT;
-				}
-				//mapObjects[nPlayerID].animX = ((int)spriteTick % 10) * 55;
-			}
+			SDL_Rect testing = { rect.x, rect.y, srcRect.w - 50, srcRect.h };
+
+			SDL_RenderDrawRect(window->GetRender(), &testing);
+
+			SDL_Rect currentPos = rect;
 
 			if (object.second.keyPress == KeyPress::RIGHT)
 			{
 				object.second.sprite->ChangeSprite("Assets/BoxerWalkRight.png");
-				std::cout << object.second.nUniqueID << " Pressed D Key \n";
+				object.second.flip = SDL_RendererFlip::SDL_FLIP_NONE;
 			}
 			else if (object.second.keyPress == KeyPress::STALL)
 			{
-				object.second.sprite->ChangeSprite("Assets/BoxerIdle.png");
+				Uint32 spriteTick = (ticks / 70) % 9;
+				object.second.sprite->ChangeSprite(boxerIdle[spriteTick]);
 			}
-			// Gravity //
-			object.second.yPos += 2.0f;
+			else if (object.second.keyPress == KeyPress::LEFT)
+			{
+				object.second.sprite->ChangeSprite("Assets/BoxerWalkRight.png");
+				object.second.flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+			}
+
+
+			if (object.second.keyPress == KeyPress::HITLEFT)
+			{
+				Uint32 spriteTick = (ticks / 50) % 6;
+				object.second.sprite->ChangeSprite(punchLeftPath[spriteTick]);
+			}
+			if (object.second.keyPress == KeyPress::HITRIGHT)
+			{
+				Uint32 spriteTick = (ticks / 50) % 6;
+				object.second.sprite->ChangeSprite(punchRightPath[spriteTick]);
+			}
 
 			// Collision //
-			if (IsOnGround())
+			if (object.second.nUniqueID == nPlayerID)
 			{
-				object.second.yPos = platform.y - rect.h;
+
+				if (Collider::AABB(platform, rect))
+				{
+					mapObjects[nPlayerID].yPos = platform.y - rect.h;
+					object.second.yPos = platform.y - rect.h;
+					object.second.velocityY = 0.0f;
+					mapObjects[nPlayerID].canJump = true;
+				}
+				else
+				{
+					// Gravity //
+					object.second.velocityY += 0.5f;
+
+				}
 			}
 
 		}
@@ -129,21 +157,8 @@ void Character::ConnectToServer()
 	Connect("127.0.0.1", 60000);
 }
 
-bool Character::IsOnGround()
+void Character::UpdateVelocity()
 {
-	if (platform.y - rect.h <= rect.y && rect.x + rect.w > platform.x && rect.x < platform.x + platform.w && rect.y < platform.y)
-	{
-		return true;
-	}
-	return false;
-}
-
-bool Character::AirTime()
-{
-	currentTime += 1.0f;
-	if (currentTime < airTime)
-	{
-		return true;
-	}
-	return false;
+	mapObjects[nPlayerID].xPos += mapObjects[nPlayerID].velocityX;
+	mapObjects[nPlayerID].yPos += mapObjects[nPlayerID].velocityY;
 }

@@ -2,6 +2,7 @@
 #include <cstdint>
 #include "Network.h"
 #include "../Sprite.h"
+#include "../Vector/Vec2D.h"
 
 enum class KeyPress
 {
@@ -9,7 +10,9 @@ enum class KeyPress
 	JUMP,
 	LEFT,
 	RIGHT,
-	HIT
+	HITLEFT,
+	HITRIGHT,
+	HITUP
 };
 
 enum class GameMsg : uint32_t
@@ -45,8 +48,14 @@ struct sPlayerDescription
 	int animX;
 	int animY;
 
+	float velocityX;
+	float velocityY;
+
+	bool canJump = false;
+
 	KeyPress keyPress;
 	Sprite* sprite;
+	SDL_RendererFlip flip;
 
 	sPlayerDescription() {}
 };
