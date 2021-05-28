@@ -89,35 +89,38 @@ bool Character::Update()
 			rect = { (int)object.second.xPos, (int)object.second.yPos, descPlayer.width, descPlayer.height };
 			SDL_RenderCopyEx(window->GetRender(), object.second.sprite->tex, &srcRect, &rect, NULL, NULL, object.second.flip);
 
-			SDL_Rect testing = { rect.x, rect.y, srcRect.w - 50, srcRect.h };
 
-			SDL_RenderDrawRect(window->GetRender(), &testing);
-
-			SDL_Rect currentPos = rect;
 
 			if (object.second.keyPress == KeyPress::RIGHT)
 			{
-				object.second.sprite->ChangeSprite("Assets/BoxerWalkRight.png");
+				punchHitbox = { rect.x + 60, rect.y + 55, 40, 20 };
+				playerHitbox = { rect.x, rect.y, rect.w - 20, rect.h };
+				Uint32 spriteTick = (ticks / 70) % 10;
+				object.second.sprite->ChangeSprite(boxerWalk[spriteTick]);
 				object.second.flip = SDL_RendererFlip::SDL_FLIP_NONE;
 			}
 			else if (object.second.keyPress == KeyPress::STALL)
 			{
-				Uint32 spriteTick = (ticks / 70) % 9;
+				Uint32 spriteTick = (ticks / 70) % 10;
 				object.second.sprite->ChangeSprite(boxerIdle[spriteTick]);
 			}
 			else if (object.second.keyPress == KeyPress::LEFT)
 			{
-				object.second.sprite->ChangeSprite("Assets/BoxerWalkRight.png");
+				punchHitbox = { rect.x, rect.y + 55, 40, 20 };
+				playerHitbox = { rect.x + 20, rect.y, rect.w - 20, rect.h };
+				Uint32 spriteTick = (ticks / 70) % 10;
+				object.second.sprite->ChangeSprite(boxerWalk[spriteTick]);
 				object.second.flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
 			}
 
 
 			if (object.second.keyPress == KeyPress::HITLEFT)
 			{
+				SDL_RenderDrawRect(window->GetRender(), &punchHitbox);
 				Uint32 spriteTick = (ticks / 50) % 6;
 				object.second.sprite->ChangeSprite(punchLeftPath[spriteTick]);
 			}
-			if (object.second.keyPress == KeyPress::HITRIGHT)
+			else if (object.second.keyPress == KeyPress::HITRIGHT)
 			{
 				Uint32 spriteTick = (ticks / 50) % 6;
 				object.second.sprite->ChangeSprite(punchRightPath[spriteTick]);

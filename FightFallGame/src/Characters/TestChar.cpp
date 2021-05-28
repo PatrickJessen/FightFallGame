@@ -10,8 +10,8 @@ void TestChar::OnPlayerCreate()
 {
 	descPlayer.xPos = 300;
 	descPlayer.yPos = 300;
-	descPlayer.width = 200;
-	descPlayer.height = 200;
+	descPlayer.width = 100;
+	descPlayer.height = 100;
 }
 
 void TestChar::OnPlayerUpdate()
