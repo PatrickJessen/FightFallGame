@@ -3,12 +3,13 @@
 #include <asio.hpp>
 #include <string>
 #include "Characters/TestChar.h"
+#include "Characters/Boxer.h"
 
 int main()
 {
 	Window* window = new Window("test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200, 750, false);
 	Sprite* sprite = new Sprite("Assets/BoxerIdle.png", window);
-	Character* tester = new TestChar(window, sprite);
+	Character* tester = new Boxer(window, sprite);
 
 	const int FPS = 60;
 	const int frameDelay = 500 / FPS;

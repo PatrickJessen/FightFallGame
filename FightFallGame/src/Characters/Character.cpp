@@ -69,67 +69,11 @@ bool Character::Update()
 			return true;
 		}
 
-
-		OnPlayerUpdate();
-		UpdateVelocity();
-		//Uint32 ticks = SDL_GetTicks();
-		//Uint32 seconds = ticks / 1000;
-		//Uint32 spriteTick = (ticks / 150) % 10;
-		//mapObjects[nPlayerID].animX = ((int)spriteTick % 10) * 55;
-
-
-		SDL_SetRenderDrawColor(window->GetRender(), 200, 150, 100, 200);
-		platform = { 150, 600, 900, 50 };
-		SDL_RenderFillRect(window->GetRender(), &platform);
 		for (auto& object : mapObjects)
 		{
-			Uint32 ticks = SDL_GetTicks();
-			Uint32 seconds = ticks / 1000;
-			srcRect = { 200, 128, 300, 290 };
-			rect = { (int)object.second.xPos, (int)object.second.yPos, descPlayer.width, descPlayer.height };
-			SDL_RenderCopyEx(window->GetRender(), object.second.sprite->tex, &srcRect, &rect, NULL, NULL, object.second.flip);
-
-
-
-			if (object.second.keyPress == KeyPress::RIGHT)
-			{
-				punchHitbox = { rect.x + 60, rect.y + 55, 40, 20 };
-				playerHitbox = { rect.x, rect.y, rect.w - 20, rect.h };
-				Uint32 spriteTick = (ticks / 70) % 10;
-				object.second.sprite->ChangeSprite(boxerWalk[spriteTick]);
-				object.second.flip = SDL_RendererFlip::SDL_FLIP_NONE;
-			}
-			else if (object.second.keyPress == KeyPress::STALL)
-			{
-				Uint32 spriteTick = (ticks / 70) % 10;
-				object.second.sprite->ChangeSprite(boxerIdle[spriteTick]);
-			}
-			else if (object.second.keyPress == KeyPress::LEFT)
-			{
-				punchHitbox = { rect.x, rect.y + 55, 40, 20 };
-				playerHitbox = { rect.x + 20, rect.y, rect.w - 20, rect.h };
-				Uint32 spriteTick = (ticks / 70) % 10;
-				object.second.sprite->ChangeSprite(boxerWalk[spriteTick]);
-				object.second.flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
-			}
-
-
-			if (object.second.keyPress == KeyPress::HITLEFT)
-			{
-				SDL_RenderDrawRect(window->GetRender(), &punchHitbox);
-				Uint32 spriteTick = (ticks / 50) % 6;
-				object.second.sprite->ChangeSprite(punchLeftPath[spriteTick]);
-			}
-			else if (object.second.keyPress == KeyPress::HITRIGHT)
-			{
-				Uint32 spriteTick = (ticks / 50) % 6;
-				object.second.sprite->ChangeSprite(punchRightPath[spriteTick]);
-			}
-
-			// Collision //
 			if (object.second.nUniqueID == nPlayerID)
 			{
-
+				// Platform Collision //	
 				if (Collider::AABB(platform, rect))
 				{
 					mapObjects[nPlayerID].yPos = platform.y - rect.h;
@@ -144,8 +88,31 @@ bool Character::Update()
 
 				}
 			}
-
+			else
+			{
+				if (Collider::AABB(punchHitbox, rect))
+				{
+					if (mapObjects[nPlayerID].velocityX > 0)
+					{
+						std::cout << "test1\n";
+						mapObjects[nPlayerID].velocityX -= 2.0f;
+					}
+					else
+					{
+						std::cout << "test2\n";
+						mapObjects[nPlayerID].velocityX += 2.0f;
+					}
+				}
+			}
 		}
+		OnPlayerUpdate();
+		UpdateMovement();
+		UpdateVelocity();
+
+		SDL_SetRenderDrawColor(window->GetRender(), 200, 150, 100, 200);
+		platform = { 150, 600, 900, 50 };
+		SDL_RenderFillRect(window->GetRender(), &platform);
+		
 
 		message<GameMsg> msg;
 		msg.header.id = GameMsg::Game_UpdatePlayer;
@@ -164,4 +131,43 @@ void Character::UpdateVelocity()
 {
 	mapObjects[nPlayerID].xPos += mapObjects[nPlayerID].velocityX;
 	mapObjects[nPlayerID].yPos += mapObjects[nPlayerID].velocityY;
+}
+
+void Character::UpdateMovement()
+{
+	if (Input::KeyPressed(Key::SPACE))
+	{
+		speed = 0;
+		mapObjects[nPlayerID].velocityY = 0;
+		speed += 15;
+		mapObjects[nPlayerID].velocityY -= speed;
+		mapObjects[nPlayerID].canJump = false;
+		mapObjects[nPlayerID].keyPress = KeyPress::JUMP;
+	}
+	else if (Input::KeyState(Key::A))
+	{
+		mapObjects[nPlayerID].xPos -= 3;
+		mapObjects[nPlayerID].keyPress = KeyPress::LEFT;
+	}
+	else if (Input::KeyState(Key::D))
+	{
+		mapObjects[nPlayerID].xPos += 3;
+		mapObjects[nPlayerID].keyPress = KeyPress::RIGHT;
+	}
+	else if (Input::KeyState(Key::L))
+	{
+		mapObjects[nPlayerID].keyPress = KeyPress::HITLEFT;
+	}
+	else if (Input::KeyState(Key::K))
+	{
+		mapObjects[nPlayerID].keyPress = KeyPress::HITRIGHT;
+	}
+	else if (Input::KeyState(Key::J))
+	{
+		mapObjects[nPlayerID].keyPress = KeyPress::HITUP;
+	}
+	else
+	{
+		mapObjects[nPlayerID].keyPress = KeyPress::STALL;
+	}
 }
