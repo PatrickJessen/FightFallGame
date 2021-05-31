@@ -2,7 +2,6 @@
 #include "Sprite.h"
 #include <asio.hpp>
 #include <string>
-#include "Characters/TestChar.h"
 #include "Characters/Boxer.h"
 
 int main()

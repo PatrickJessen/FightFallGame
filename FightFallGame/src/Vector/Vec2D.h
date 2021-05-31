@@ -7,8 +7,8 @@ public:
 	float x;
 	float y;
 
-	//Vec2D();
-	//Vec2D(float x, float y);
+	Vec2D();
+	Vec2D(float x, float y);
 
 	Vec2D& Add(const Vec2D& vec);
 	Vec2D& Subtract(const Vec2D& vec);

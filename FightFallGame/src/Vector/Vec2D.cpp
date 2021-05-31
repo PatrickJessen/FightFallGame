@@ -1,16 +1,16 @@
 #include "Vec2D.h"
 
-//Vec2D::Vec2D()
-//{
-//	x = 0.0f;
-//	y = 0.0f;
-//}
-//
-//Vec2D::Vec2D(float x, float y)
-//{
-//	this->x = x;
-//	this->y = y;
-//}
+Vec2D::Vec2D()
+{
+	x = 0.0f;
+	y = 0.0f;
+}
+
+Vec2D::Vec2D(float x, float y)
+{
+	this->x = x;
+	this->y = y;
+}
 
 Vec2D& Vec2D::Add(const Vec2D& vec)
 {

@@ -20,6 +20,7 @@ public:
 	virtual void OnPlayerUpdate() = 0;
 
 	void UpdateMovement();
+	void BounceBack();
 
 protected:
 	uint32_t nPlayerID = 0;
@@ -35,7 +36,6 @@ protected:
 
 	SDL_Rect playerHitbox;
 	SDL_Rect currentHitbox;
-	SDL_Rect punchHitbox;
 
 	float speed = 0;
 

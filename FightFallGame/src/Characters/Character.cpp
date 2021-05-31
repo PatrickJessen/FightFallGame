@@ -12,54 +12,54 @@ bool Character::Update()
 
 			switch (msg.header.id)
 			{
-				case(GameMsg::Client_Accepted):
-				{
-					std::cout << "Server accepted client - you're in!\n";
-					message<GameMsg> msg;
-					msg.header.id = GameMsg::Client_RegisterWithServer;
-					msg << descPlayer;
-					Send(msg);
-					break;
-				}
+			case(GameMsg::Client_Accepted):
+			{
+				std::cout << "Server accepted client - you're in!\n";
+				message<GameMsg> msg;
+				msg.header.id = GameMsg::Client_RegisterWithServer;
+				msg << descPlayer;
+				Send(msg);
+				break;
+			}
 
-				case(GameMsg::Client_AssignID):
-				{
-					// Server is assigning us OUR id
-					msg >> nPlayerID;
-					std::cout << "Assigned Client ID = " << nPlayerID << "\n";
-					break;
-				}
+			case(GameMsg::Client_AssignID):
+			{
+				// Server is assigning us OUR id
+				msg >> nPlayerID;
+				std::cout << "Assigned Client ID = " << nPlayerID << "\n";
+				break;
+			}
 
-				case(GameMsg::Game_AddPlayer):
+			case(GameMsg::Game_AddPlayer):
+			{
+				sPlayerDescription desc;
+				msg >> desc;
+				desc.sprite = new Sprite("Assets/BoxerIdle.png", window);
+				mapObjects.insert_or_assign(desc.nUniqueID, desc);
+				if (desc.nUniqueID == nPlayerID)
 				{
-					sPlayerDescription desc;
-					msg >> desc;
-					desc.sprite = new Sprite("Assets/BoxerIdle.png", window);
-					mapObjects.insert_or_assign(desc.nUniqueID, desc);
-					if (desc.nUniqueID == nPlayerID)
-					{
-						// Now we exist in game world
-						waitingForConnection = false;
-					}
-					break;
+					// Now we exist in game world
+					waitingForConnection = false;
 				}
+				break;
+			}
 
-				case(GameMsg::Game_RemovePlayer):
-				{
-					uint32_t nRemovalID = 0;
-					msg >> nRemovalID;
-					mapObjects.erase(nRemovalID);
-					break;
-				}
+			case(GameMsg::Game_RemovePlayer):
+			{
+				uint32_t nRemovalID = 0;
+				msg >> nRemovalID;
+				mapObjects.erase(nRemovalID);
+				break;
+			}
 
-				case(GameMsg::Game_UpdatePlayer):
-				{
-					sPlayerDescription desc;
-					msg >> desc;
-					desc.sprite = mapObjects[desc.nUniqueID].sprite;
-					mapObjects.insert_or_assign(desc.nUniqueID, desc);
-					break;
-				}
+			case(GameMsg::Game_UpdatePlayer):
+			{
+				sPlayerDescription desc;
+				msg >> desc;
+				desc.sprite = mapObjects[desc.nUniqueID].sprite;
+				mapObjects.insert_or_assign(desc.nUniqueID, desc);
+				break;
+			}
 			}
 
 		}
@@ -68,6 +68,9 @@ bool Character::Update()
 			std::cout << "Waiting for Connection....\n";
 			return true;
 		}
+
+		UpdateVelocity();
+		OnPlayerUpdate();
 
 		for (auto& object : mapObjects)
 		{
@@ -90,29 +93,15 @@ bool Character::Update()
 			}
 			else
 			{
-				if (Collider::AABB(punchHitbox, rect))
-				{
-					if (mapObjects[nPlayerID].velocityX > 0)
-					{
-						std::cout << "test1\n";
-						mapObjects[nPlayerID].velocityX -= 2.0f;
-					}
-					else
-					{
-						std::cout << "test2\n";
-						mapObjects[nPlayerID].velocityX += 2.0f;
-					}
-				}
+				
 			}
 		}
-		OnPlayerUpdate();
-		UpdateMovement();
-		UpdateVelocity();
 
+		UpdateMovement();
 		SDL_SetRenderDrawColor(window->GetRender(), 200, 150, 100, 200);
 		platform = { 150, 600, 900, 50 };
 		SDL_RenderFillRect(window->GetRender(), &platform);
-		
+
 
 		message<GameMsg> msg;
 		msg.header.id = GameMsg::Game_UpdatePlayer;
@@ -135,7 +124,7 @@ void Character::UpdateVelocity()
 
 void Character::UpdateMovement()
 {
-	if (Input::KeyPressed(Key::SPACE))
+	if (Input::KeyPressed(Key::SPACE) && mapObjects[nPlayerID].canJump)
 	{
 		speed = 0;
 		mapObjects[nPlayerID].velocityY = 0;
@@ -147,11 +136,13 @@ void Character::UpdateMovement()
 	else if (Input::KeyState(Key::A))
 	{
 		mapObjects[nPlayerID].xPos -= 3;
+		mapObjects[nPlayerID].velocityX = 0.0f;
 		mapObjects[nPlayerID].keyPress = KeyPress::LEFT;
 	}
 	else if (Input::KeyState(Key::D))
 	{
 		mapObjects[nPlayerID].xPos += 3;
+		mapObjects[nPlayerID].velocityX = 0.0f;
 		mapObjects[nPlayerID].keyPress = KeyPress::RIGHT;
 	}
 	else if (Input::KeyState(Key::L))
