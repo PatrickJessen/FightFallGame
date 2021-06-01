@@ -35,27 +35,21 @@ void Ninja::OnPlayerUpdate()
 		if (object.second.keyPress == KeyPress::RIGHT)
 		{
 			mapObjects[nPlayerID].playerHitbox = { (int)mapObjects[nPlayerID].xPos, (int)mapObjects[nPlayerID].yPos, mapObjects[nPlayerID].width - 20, mapObjects[nPlayerID].height };
-			Uint32 spriteTick = (ticks / 70) % 6;
-			object.second.run[spriteTick] = run[spriteTick];
-			object.second.sprite->ChangeSprite(object.second.run[spriteTick]);
-			mapObjects[nPlayerID].sprite->ChangeSprite(mapObjects[nPlayerID].run[spriteTick]);
+			Uint32 spriteTick = (ticks / 70) % 10;
+			object.second.sprite->ChangeSprite(run[spriteTick]);
 			object.second.flip = SDL_RendererFlip::SDL_FLIP_NONE;
 		}
 		if (object.second.keyPress == KeyPress::LEFT)
 		{
 			mapObjects[nPlayerID].playerHitbox = { (int)mapObjects[nPlayerID].xPos + 20, (int)mapObjects[nPlayerID].yPos, mapObjects[nPlayerID].width - 20, mapObjects[nPlayerID].height };
-			Uint32 spriteTick = (ticks / 70) % 6;
-			object.second.run[spriteTick] = run[spriteTick];
-			object.second.sprite->ChangeSprite(object.second.run[spriteTick]);
-			mapObjects[nPlayerID].sprite->ChangeSprite(mapObjects[nPlayerID].run[spriteTick]);
+			Uint32 spriteTick = (ticks / 70) % 10;
+			object.second.sprite->ChangeSprite(run[spriteTick]);
 			object.second.flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
 		}
 		if (object.second.keyPress == KeyPress::STALL)
 		{
-			Uint32 spriteTick = (ticks / 70) % 6;
-			object.second.idle[spriteTick] = idle[spriteTick];
-			object.second.sprite->ChangeSprite(object.second.idle[spriteTick]);
-			mapObjects[nPlayerID].sprite->ChangeSprite(mapObjects[nPlayerID].idle[spriteTick]);
+			Uint32 spriteTick = (ticks / 70) % 10;
+			object.second.sprite->ChangeSprite(idle[spriteTick]);
 		}
 
 		if (object.second.nUniqueID == nPlayerID)
