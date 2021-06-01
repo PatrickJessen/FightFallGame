@@ -19,8 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\CharacterSelection.h" />
     <ClInclude Include="src\Characters\Boxer.h" />
     <ClInclude Include="src\Characters\Character.h" />
+    <ClInclude Include="src\Characters\Ninja.h" />
+    <ClInclude Include="src\Characters\Robot.h" />
     <ClInclude Include="src\Collider.h" />
     <ClInclude Include="src\Server\Common.h" />
     <ClInclude Include="src\Server\Network.h" />
@@ -31,8 +34,11 @@
     <ClInclude Include="src\Window\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\CharacterSelection.cpp" />
     <ClCompile Include="src\Characters\Boxer.cpp" />
     <ClCompile Include="src\Characters\Character.cpp" />
+    <ClCompile Include="src\Characters\Ninja.cpp" />
+    <ClCompile Include="src\Characters\Robot.cpp" />
     <ClCompile Include="src\Collider.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\Input.cpp" />

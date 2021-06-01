@@ -32,7 +32,7 @@ void Boxer::OnPlayerUpdate()
 		{
 			
 		}
-		else if (object.second.keyPress == KeyPress::RIGHT)
+		if (object.second.keyPress == KeyPress::RIGHT)
 		{
 
 			mapObjects[nPlayerID].playerHitbox = { (int)mapObjects[nPlayerID].xPos, (int)mapObjects[nPlayerID].yPos, mapObjects[nPlayerID].width - 20, mapObjects[nPlayerID].height };
@@ -40,15 +40,16 @@ void Boxer::OnPlayerUpdate()
 			object.second.sprite->ChangeSprite(boxerWalk[spriteTick]);
 			object.second.flip = SDL_RendererFlip::SDL_FLIP_NONE;
 		}
-		else if (object.second.keyPress == KeyPress::LEFT)
+		if (object.second.keyPress == KeyPress::LEFT)
 		{
 			mapObjects[nPlayerID].playerHitbox = { (int)mapObjects[nPlayerID].xPos + 20, (int)mapObjects[nPlayerID].yPos, mapObjects[nPlayerID].width - 20, mapObjects[nPlayerID].height };
 			Uint32 spriteTick = (ticks / 70) % 10;
 			object.second.sprite->ChangeSprite(boxerWalk[spriteTick]);
 			object.second.flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
 		}
-		else if (object.second.keyPress == KeyPress::STALL)
+		if (object.second.keyPress == KeyPress::STALL)
 		{
+			isBlocking = false;
 			Uint32 spriteTick = (ticks / 70) % 10;
 			object.second.sprite->ChangeSprite(boxerIdle[spriteTick]);
 		}
@@ -66,7 +67,7 @@ void Boxer::OnPlayerUpdate()
 			Uint32 spriteTick = (ticks / 50) % 6;
 			object.second.sprite->ChangeSprite(punchLeftPath[spriteTick]);
 		}
-		else if (object.second.keyPress == KeyPress::HITRIGHT)
+		if (object.second.keyPress == KeyPress::HITRIGHT)
 		{
 			if (object.second.flip == SDL_RendererFlip::SDL_FLIP_NONE)
 			{
@@ -79,7 +80,7 @@ void Boxer::OnPlayerUpdate()
 			Uint32 spriteTick = (ticks / 50) % 6;
 			object.second.sprite->ChangeSprite(punchRightPath[spriteTick]);
 		}
-		else if (object.second.keyPress == KeyPress::HITUP)
+		if (object.second.keyPress == KeyPress::HITUP)
 		{
 			if (object.second.flip == SDL_RendererFlip::SDL_FLIP_NONE)
 			{
@@ -91,6 +92,12 @@ void Boxer::OnPlayerUpdate()
 			}
 			Uint32 spriteTick = (ticks / 60) % 7;
 			object.second.sprite->ChangeSprite(punchUp[spriteTick]);
+		}
+		if (object.second.keyPress == KeyPress::BLOCK)
+		{
+			isBlocking = true;
+			Uint32 spriteTick = (ticks / 80) % 10;
+			object.second.sprite->ChangeSprite(block[spriteTick]);
 		}
 
 		//SDL_Rect punchHitbox;
@@ -115,23 +122,24 @@ void Boxer::OnPlayerUpdate()
 		{
 			if (Collider::AABB(object.second.punchHitbox, mapObjects[nPlayerID].playerHitbox))
 			{
-				std::cout << object.second.punchHitbox.x << " , " << mapObjects[nPlayerID].playerHitbox.x << "\n";
-				if (object.second.flip == SDL_RendererFlip::SDL_FLIP_NONE && object.second.keyPress == KeyPress::HITLEFT || object.second.flip == SDL_RendererFlip::SDL_FLIP_NONE && object.second.keyPress == KeyPress::HITRIGHT)
+				if (!isBlocking)
 				{
-					VelBounceXPositive();
+					if (object.second.flip == SDL_RendererFlip::SDL_FLIP_NONE && object.second.keyPress == KeyPress::HITLEFT || object.second.flip == SDL_RendererFlip::SDL_FLIP_NONE && object.second.keyPress == KeyPress::HITRIGHT)
+					{
+						VelBounceXPositive();
+					}
+					if (object.second.flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL && object.second.keyPress == KeyPress::HITLEFT || object.second.flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL && object.second.keyPress == KeyPress::HITRIGHT)
+					{
+						VelBounceXNegative();
+					}
 				}
-				else if (object.second.flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL && object.second.keyPress == KeyPress::HITLEFT || object.second.flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL && object.second.keyPress == KeyPress::HITRIGHT)
-				{
-					VelBounceXNegative();
-				}
-				else if (object.second.flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL && object.second.keyPress == KeyPress::HITUP || object.second.flip == SDL_RendererFlip::SDL_FLIP_NONE && object.second.keyPress == KeyPress::HITUP)
+				if (object.second.flip == SDL_RendererFlip::SDL_FLIP_HORIZONTAL && object.second.keyPress == KeyPress::HITUP || object.second.flip == SDL_RendererFlip::SDL_FLIP_NONE && object.second.keyPress == KeyPress::HITUP)
 				{
 					VelBounceY();
 				}
 			}
 			mapObjects[nPlayerID].playerHitbox = { (int)mapObjects[nPlayerID].xPos, (int)mapObjects[nPlayerID].yPos, mapObjects[nPlayerID].width - 20, mapObjects[nPlayerID].height };
 		}
-
 		object.second.punchHitbox = { -345345,-345345,0,0 };
 	}
 }

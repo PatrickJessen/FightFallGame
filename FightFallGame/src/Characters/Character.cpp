@@ -34,7 +34,7 @@ bool Character::Update()
 			{
 				sPlayerDescription desc;
 				msg >> desc;
-				desc.sprite = new Sprite("Assets/BoxerIdle.png", window);
+				desc.sprite = new Sprite("", window);
 				mapObjects.insert_or_assign(desc.nUniqueID, desc);
 				if (desc.nUniqueID == nPlayerID)
 				{
@@ -69,9 +69,9 @@ bool Character::Update()
 			return true;
 		}
 
+		UpdateMovement();
 		UpdateVelocity();
 		OnPlayerUpdate();
-		UpdateMovement();
 
 		//for (auto& object : mapObjects)
 		//{
@@ -135,13 +135,13 @@ void Character::UpdateMovement()
 	}
 	else if (Input::KeyState(Key::A))
 	{
-		mapObjects[nPlayerID].xPos -= 3;
+		mapObjects[nPlayerID].xPos -= 10;
 		mapObjects[nPlayerID].velocityX = 0.0f;
 		mapObjects[nPlayerID].keyPress = KeyPress::LEFT;
 	}
 	else if (Input::KeyState(Key::D))
 	{
-		mapObjects[nPlayerID].xPos += 3;
+		mapObjects[nPlayerID].xPos += 10;
 		mapObjects[nPlayerID].velocityX = 0.0f;
 		mapObjects[nPlayerID].keyPress = KeyPress::RIGHT;
 	}
@@ -156,6 +156,10 @@ void Character::UpdateMovement()
 	else if (Input::KeyState(Key::J))
 	{
 		mapObjects[nPlayerID].keyPress = KeyPress::HITUP;
+	}
+	else if (Input::KeyState(Key::N))
+	{
+		mapObjects[nPlayerID].keyPress = KeyPress::BLOCK;
 	}
 	else
 	{

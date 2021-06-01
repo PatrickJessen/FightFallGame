@@ -12,7 +12,13 @@ enum class KeyPress
 	RIGHT,
 	HITLEFT,
 	HITRIGHT,
-	HITUP
+	HITUP,
+	BLOCK,
+	DIZZY,
+	HURT,
+	KO,
+	SHOOT,
+	SLIDE
 };
 
 enum class GameMsg : uint32_t
@@ -58,6 +64,9 @@ struct sPlayerDescription
 	SDL_RendererFlip flip;
 	SDL_Rect punchHitbox;
 	SDL_Rect playerHitbox;
+
+	const char* run[6];
+	const char* idle[6];
 
 	sPlayerDescription() {}
 };
