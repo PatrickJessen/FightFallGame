@@ -20,6 +20,9 @@ public:
 	virtual void OnPlayerUpdate() = 0;
 
 	void UpdateMovement();
+	void VelBounceXPositive();
+	void VelBounceXNegative();
+	void VelBounceY();
 
 protected:
 	uint32_t nPlayerID = 0;
@@ -32,10 +35,6 @@ protected:
 
 	Sprite* sprite;
 	Window* window;
-
-	SDL_Rect playerHitbox;
-	SDL_Rect currentHitbox;
-	SDL_Rect punchHitbox;
 
 	float speed = 0;
 

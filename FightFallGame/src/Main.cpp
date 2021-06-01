@@ -2,14 +2,18 @@
 #include "Sprite.h"
 #include <asio.hpp>
 #include <string>
-#include "Characters/TestChar.h"
 #include "Characters/Boxer.h"
+#include "Characters/Robot.h"
+#include "Characters/Ninja.h"
+#include "CharacterSelection.h"
 
 int main()
 {
 	Window* window = new Window("test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200, 750, false);
-	Sprite* sprite = new Sprite("Assets/BoxerIdle.png", window);
-	Character* tester = new Boxer(window, sprite);
+	Sprite* sprite = new Sprite("", window);
+	CharacterSelection* selection = new CharacterSelection(window);
+
+	Character* character;
 
 	const int FPS = 60;
 	const int frameDelay = 500 / FPS;
@@ -17,8 +21,23 @@ int main()
 	Uint32 frameStart;
 	int frameTime;
 
-	tester->OnPlayerCreate();
-	tester->ConnectToServer();
+	selection->SelectCharacter();
+
+	if (selection->boxerSelected)
+	{
+		character = new Boxer(window, sprite);
+	}
+	else if (selection->robotSelected)
+	{
+		character = new Robot(window, sprite);
+	}
+	else
+	{
+		character = new Ninja(window, sprite);
+	}
+
+	character->OnPlayerCreate();
+	character->ConnectToServer();
 	while (true)
 	{
 		frameStart = SDL_GetTicks();
@@ -28,7 +47,7 @@ int main()
 		{
 			SDL_Delay(frameDelay - frameTime);
 		}
-		tester->Update();
+		character->Update();
 		window->Update();
 		window->Clear();
 	}
