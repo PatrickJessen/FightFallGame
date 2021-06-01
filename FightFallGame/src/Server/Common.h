@@ -56,6 +56,8 @@ struct sPlayerDescription
 	KeyPress keyPress;
 	Sprite* sprite;
 	SDL_RendererFlip flip;
+	SDL_Rect punchHitbox;
+	SDL_Rect playerHitbox;
 
 	sPlayerDescription() {}
 };

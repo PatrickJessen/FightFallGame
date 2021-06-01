@@ -18,4 +18,6 @@ private:
 	const char* boxerIdle[10] = { "Assets/boxer/Idle1.png", "Assets/boxer/Idle2.png", "Assets/boxer/Idle3.png", "Assets/boxer/Idle4.png", "Assets/boxer/Idle5.png", "Assets/boxer/Idle6.png", "Assets/boxer/Idle7.png", "Assets/boxer/Idle8.png", "Assets/boxer/Idle9.png", "Assets/boxer/Idle10.png" };
 
 	const char* boxerWalk[10] = { "Assets/boxer/Walk (1).png", "Assets/boxer/Walk (2).png", "Assets/boxer/Walk (3).png", "Assets/boxer/Walk (4).png", "Assets/boxer/Walk (5).png", "Assets/boxer/Walk (6).png", "Assets/boxer/Walk (7).png", "Assets/boxer/Walk (8).png", "Assets/boxer/Walk (9).png", "Assets/boxer/Walk (10).png" };
+
+	const char* punchUp[7] = { "Assets/boxer/PunchUp (1).png", "Assets/boxer/PunchUp (2).png", "Assets/boxer/PunchUp (3).png", "Assets/boxer/PunchUp (4).png", "Assets/boxer/PunchUp (5).png", "Assets/boxer/PunchUp (6).png", "Assets/boxer/PunchUp (7).png" };
 };

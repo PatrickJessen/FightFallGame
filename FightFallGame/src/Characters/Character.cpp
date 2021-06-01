@@ -71,33 +71,33 @@ bool Character::Update()
 
 		UpdateVelocity();
 		OnPlayerUpdate();
-
-		for (auto& object : mapObjects)
-		{
-			if (object.second.nUniqueID == nPlayerID)
-			{
-				// Platform Collision //	
-				if (Collider::AABB(platform, rect))
-				{
-					mapObjects[nPlayerID].yPos = platform.y - rect.h;
-					object.second.yPos = platform.y - rect.h;
-					object.second.velocityY = 0.0f;
-					mapObjects[nPlayerID].canJump = true;
-				}
-				else
-				{
-					// Gravity //
-					object.second.velocityY += 0.5f;
-
-				}
-			}
-			else
-			{
-				
-			}
-		}
-
 		UpdateMovement();
+
+		//for (auto& object : mapObjects)
+		//{
+		//	if (object.second.nUniqueID == nPlayerID)
+		//	{
+		//		// Platform Collision //	
+		//		if (Collider::AABB(platform, rect))
+		//		{
+		//			mapObjects[nPlayerID].yPos = platform.y - rect.h;
+		//			object.second.yPos = platform.y - rect.h;
+		//			object.second.velocityY = 0.0f;
+		//			mapObjects[nPlayerID].canJump = true;
+		//		}
+		//		else
+		//		{
+		//			// Gravity //
+		//			object.second.velocityY += 0.5f;
+
+		//		}
+		//	}
+		//	else
+		//	{
+		//		
+		//	}
+		//}
+
 		SDL_SetRenderDrawColor(window->GetRender(), 200, 150, 100, 200);
 		platform = { 150, 600, 900, 50 };
 		SDL_RenderFillRect(window->GetRender(), &platform);
@@ -161,4 +161,31 @@ void Character::UpdateMovement()
 	{
 		mapObjects[nPlayerID].keyPress = KeyPress::STALL;
 	}
+}
+
+void Character::VelBounceXPositive()
+{
+	while (mapObjects[nPlayerID].velocityX <= 7.0f)
+	{
+		mapObjects[nPlayerID].velocityX += 1.5f;
+		//mapObjects[nPlayerID].velocityY -= 1.5f;
+		//mapObjects[nPlayerID].playerHitbox = { (int)mapObjects[nPlayerID].xPos + (int)mapObjects[nPlayerID].velocityX, (int)mapObjects[nPlayerID].yPos, mapObjects[nPlayerID].width - 20, mapObjects[nPlayerID].height };
+	}
+
+}
+
+void Character::VelBounceXNegative()
+{
+	while (mapObjects[nPlayerID].velocityX >= -7.0f)
+	{
+		mapObjects[nPlayerID].velocityX -= 1.5f;
+		//mapObjects[nPlayerID].velocityY -= 1.5f;
+		//mapObjects[nPlayerID].playerHitbox = { (int)mapObjects[nPlayerID].xPos + 20 + (int)mapObjects[nPlayerID].velocityX, (int)mapObjects[nPlayerID].yPos, mapObjects[nPlayerID].width - 20, mapObjects[nPlayerID].height };
+	}
+}
+
+void Character::VelBounceY()
+{
+	mapObjects[nPlayerID].velocityY = -10.5f;
+	mapObjects[nPlayerID].playerHitbox = { (int)mapObjects[nPlayerID].xPos, (int)mapObjects[nPlayerID].yPos - (int)mapObjects[nPlayerID].velocityY, mapObjects[nPlayerID].width - 20, mapObjects[nPlayerID].height };
 }
