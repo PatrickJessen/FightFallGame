@@ -19,6 +19,13 @@ public:
 	virtual void OnPlayerCreate() = 0;
 	virtual void OnPlayerUpdate() = 0;
 
+	void HandleObjectInput(std::pair<const uint32_t, sPlayerDescription> &object, int tickSpeed, int tickTimes, const char* path[], SDL_RendererFlip flip);
+	void HandleObjectInput(std::pair<const uint32_t, sPlayerDescription> &object, int tickSpeed, int tickTimes, const char* path[]);
+	void DrawSprite(std::pair<const uint32_t, sPlayerDescription>& object, int x, int y, int w, int h);
+	void DrawSprite(std::pair<const uint32_t, sPlayerDescription>& object, int x, int y, int h, int w, int srcX, int srcY, int srcW, int srcH);
+
+	void CollisionAndGravity(std::pair<const uint32_t, sPlayerDescription>& object);
+
 	void UpdateMovement();
 	void VelBounceXPositive();
 	void VelBounceXNegative();

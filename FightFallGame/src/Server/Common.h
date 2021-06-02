@@ -65,8 +65,7 @@ struct sPlayerDescription
 	SDL_Rect punchHitbox;
 	SDL_Rect playerHitbox;
 
-	const char* run[6];
-	const char* idle[6];
+	const char* path;
 
 	sPlayerDescription() {}
 };
