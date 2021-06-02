@@ -22,8 +22,13 @@ void Robot::OnPlayerUpdate()
 {
 	for (auto& object : mapObjects)
 	{
-		DrawSprite(object, (int)object.second.xPos, (int)object.second.yPos, (int)object.second.width, (int)object.second.height);
 
+		if (object.second.path != NULL)
+		{
+			object.second.sprite->ChangeSprite(object.second.path);
+		}
+
+		DrawSprite(object, (int)object.second.xPos, (int)object.second.yPos, (int)object.second.width, (int)object.second.height);
 		if (object.second.keyPress == KeyPress::JUMP)
 		{
 
@@ -44,16 +49,12 @@ void Robot::OnPlayerUpdate()
 		}
 		if (object.second.keyPress == KeyPress::STALL)
 		{
-			HandleObjectInput(object, 70, 8, idle);
+			HandleObjectInput(object, 70, 10, idle);
 		}
 
 		if (object.second.nUniqueID == nPlayerID)
 		{
 			CollisionAndGravity(object);
-		}
-		if (object.second.path != NULL)
-		{
-			object.second.sprite->ChangeSprite(object.second.path);
 		}
 	}
 }

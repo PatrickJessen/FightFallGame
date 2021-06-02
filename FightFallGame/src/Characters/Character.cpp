@@ -5,7 +5,7 @@ bool Character::Update()
 {
 	if (IsConnected())
 	{
-		//SDL_Delay(5);
+		SDL_Delay(1);
 		while (!Incoming().empty())
 		{
 			auto msg = Incoming().pop_front().msg;
@@ -103,8 +103,8 @@ void Character::HandleObjectInput(std::pair<const uint32_t, sPlayerDescription> 
 	Uint32 seconds = ticks / 1000;
 	Uint32 spriteTick = (ticks / tickSpeed) % tickTimes;
 
-	mapObjects[nPlayerID].path = path[spriteTick];
-	object.second.sprite->ChangeSprite(path[spriteTick]);
+	object.second.path = path[spriteTick];
+	//mapObjects[object.second.nUniqueID].sprite->ChangeSprite(mapObjects[object.second.nUniqueID].path);
 	object.second.flip = flip;
 }
 
@@ -113,8 +113,8 @@ void Character::HandleObjectInput(std::pair<const uint32_t, sPlayerDescription>&
 	Uint32 ticks = SDL_GetTicks();
 	Uint32 seconds = ticks / 1000;
 	Uint32 spriteTick = (ticks / tickSpeed) % tickTimes;
-	mapObjects[nPlayerID].path = path[spriteTick];
-	object.second.sprite->ChangeSprite(path[spriteTick]);
+	object.second.path = path[spriteTick];
+	//mapObjects[object.second.nUniqueID].sprite->ChangeSprite(mapObjects[object.second.nUniqueID].path);
 }
 
 void Character::DrawSprite(std::pair<const uint32_t, sPlayerDescription>& object, int x, int y, int w, int h)
