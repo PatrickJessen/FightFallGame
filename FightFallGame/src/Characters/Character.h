@@ -4,6 +4,7 @@
 #include "../Sprite.h"
 #include "../Server/Common.h"
 #include "../Collider.h"
+#include "../Input.h"
 
 
 class Character : public client_interface<GameMsg>
@@ -21,6 +22,8 @@ public:
 
 	void HandleObjectInput(std::pair<const uint32_t, sPlayerDescription> &object, int tickSpeed, int tickTimes, const char* path[], SDL_RendererFlip flip);
 	void HandleObjectInput(std::pair<const uint32_t, sPlayerDescription> &object, int tickSpeed, int tickTimes, const char* path[]);
+	void HandleBulletInput(std::pair<const uint32_t, sPlayerDescription> &object, int tickSpeed, int tickTimes, const char* path[], SDL_RendererFlip flip);
+	void HandleBulletInput(std::pair<const uint32_t, sPlayerDescription> &object, int tickSpeed, int tickTimes, const char* path[]);
 	void DrawSprite(std::pair<const uint32_t, sPlayerDescription>& object, int x, int y, int w, int h);
 	void DrawSprite(std::pair<const uint32_t, sPlayerDescription>& object, int x, int y, int h, int w, int srcX, int srcY, int srcW, int srcH);
 
@@ -44,6 +47,8 @@ protected:
 	Window* window;
 
 	float speed = 0;
+
+	int counter = 0;
 
 private:
 	bool waitingForConnection = true;

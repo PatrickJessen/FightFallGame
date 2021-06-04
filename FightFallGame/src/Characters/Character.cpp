@@ -1,5 +1,4 @@
 #include "Character.h"
-#include "../Input.h"
 
 bool Character::Update()
 {
@@ -35,6 +34,7 @@ bool Character::Update()
 					sPlayerDescription desc;
 					msg >> desc;
 					desc.sprite = new Sprite("", window);
+					desc.sprBullet = new Sprite("", window);
 					mapObjects.insert_or_assign(desc.nUniqueID, desc);
 					if (desc.nUniqueID == nPlayerID)
 					{
@@ -57,6 +57,7 @@ bool Character::Update()
 					sPlayerDescription desc;
 					msg >> desc;
 					desc.sprite = mapObjects[desc.nUniqueID].sprite;
+					desc.sprBullet = mapObjects[desc.nUniqueID].sprBullet;
 					mapObjects.insert_or_assign(desc.nUniqueID, desc);
 					break;
 				}
@@ -69,7 +70,7 @@ bool Character::Update()
 			return true;
 		}
 
-		UpdateMovement();
+		//UpdateMovement();
 		UpdateVelocity();
 		OnPlayerUpdate();
 
@@ -115,6 +116,24 @@ void Character::HandleObjectInput(std::pair<const uint32_t, sPlayerDescription>&
 	Uint32 spriteTick = (ticks / tickSpeed) % tickTimes;
 	object.second.path = path[spriteTick];
 	//mapObjects[object.second.nUniqueID].sprite->ChangeSprite(mapObjects[object.second.nUniqueID].path);
+}
+
+void Character::HandleBulletInput(std::pair<const uint32_t, sPlayerDescription>& object, int tickSpeed, int tickTimes, const char* path[], SDL_RendererFlip flip)
+{
+	Uint32 ticks = SDL_GetTicks();
+	Uint32 seconds = ticks / 1000;
+	Uint32 spriteTick = (ticks / tickSpeed) % tickTimes;
+
+	object.second.bulletPath = path[spriteTick];
+	object.second.flip = flip;
+}
+
+void Character::HandleBulletInput(std::pair<const uint32_t, sPlayerDescription>& object, int tickSpeed, int tickTimes, const char* path[])
+{
+	Uint32 ticks = SDL_GetTicks();
+	Uint32 seconds = ticks / 1000;
+	Uint32 spriteTick = (ticks / tickSpeed) % tickTimes;
+	object.second.bulletPath = path[spriteTick];
 }
 
 void Character::DrawSprite(std::pair<const uint32_t, sPlayerDescription>& object, int x, int y, int w, int h)

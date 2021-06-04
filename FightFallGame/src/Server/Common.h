@@ -3,6 +3,7 @@
 #include "Network.h"
 #include "../Sprite.h"
 #include "../Vector/Vec2D.h"
+#include "../Characters/Abillities/Projectile.h"
 
 enum class KeyPress
 {
@@ -51,6 +52,15 @@ struct sPlayerDescription
 	int width;
 	int height;
 
+	float hsp = 2.0f;
+	float vsp = 2.0f;
+	float bulletPosX;
+	float bulletPosY;
+	int bulletWidth = 32;
+	int bulletHeight = 32;
+	SDL_RendererFlip bulletFlip;
+	int projectileSize;
+
 	int animX;
 	int animY;
 
@@ -61,11 +71,13 @@ struct sPlayerDescription
 
 	KeyPress keyPress;
 	Sprite* sprite;
+	Sprite* sprBullet;
 	SDL_RendererFlip flip;
 	SDL_Rect punchHitbox;
 	SDL_Rect playerHitbox;
 
 	const char* path;
+	const char* bulletPath;
 
 	sPlayerDescription() {}
 };

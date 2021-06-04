@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CharacterSelection.h" />
+    <ClInclude Include="src\Characters\Abillities\IShoot.h" />
+    <ClInclude Include="src\Characters\Abillities\Projectile.h" />
     <ClInclude Include="src\Characters\Boxer.h" />
     <ClInclude Include="src\Characters\Character.h" />
     <ClInclude Include="src\Characters\Ninja.h" />
@@ -35,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CharacterSelection.cpp" />
+    <ClCompile Include="src\Characters\Abillities\Projectile.cpp" />
     <ClCompile Include="src\Characters\Boxer.cpp" />
     <ClCompile Include="src\Characters\Character.cpp" />
     <ClCompile Include="src\Characters\Ninja.cpp" />

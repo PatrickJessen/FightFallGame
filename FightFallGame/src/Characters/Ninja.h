@@ -12,6 +12,9 @@ public:
 	virtual void OnPlayerUpdate() override;
 
 private:
+	void Movement(std::pair<const uint32_t, sPlayerDescription>& object);
+
+private:
 	const char* run[10] = { "Assets/Ninja/Run (1).png", "Assets/Ninja/Run (2).png", "Assets/Ninja/Run (3).png", "Assets/Ninja/Run (4).png", "Assets/Ninja/Run (5).png", "Assets/Ninja/Run (6).png", "Assets/Ninja/Run (7).png", "Assets/Ninja/Run (8).png", "Assets/Ninja/Run (9).png", "Assets/Ninja/Run (10).png" };
 
 	const char* idle[10] = { "Assets/Ninja/Idle (1).png", "Assets/Ninja/Idle (2).png", "Assets/Ninja/Idle (3).png", "Assets/Ninja/Idle (4).png", "Assets/Ninja/Idle (5).png", "Assets/Ninja/Idle (6).png", "Assets/Ninja/Idle (7).png", "Assets/Ninja/Idle (8).png", "Assets/Ninja/Idle (9).png", "Assets/Ninja/Idle (10).png" };

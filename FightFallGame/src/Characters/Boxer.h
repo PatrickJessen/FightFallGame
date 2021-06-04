@@ -12,6 +12,9 @@ public:
 	virtual void OnPlayerUpdate() override;
 
 private:
+	void Movement(std::pair<const uint32_t, sPlayerDescription>& object);
+
+private:
 	bool isBlocking = false;
 
 
